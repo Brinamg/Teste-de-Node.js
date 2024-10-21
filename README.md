@@ -23,3 +23,9 @@ Este projeto é um sistema de gerenciamento de tarefas que permite adicionar, at
 - Instale o [Node.js](https://nodejs.org/) (versão 14 ou superior).
 - Instale o [npm](https://www.npmjs.com/).
 - (Opcional) Instale o [SQLite](https://www.sqlite.org/index.html).
+
+## Rodar a aplicação
+- git clone https://github.com/Brinamg/Teste-de-Node.js.git
+- code
+- npm install express sqlite3 cors body-parser express-validator jsonwebtoken bcrypt redis helmet install ioredis
+- node server.js
