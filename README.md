@@ -1,2 +1,25 @@
-# Teste-de-Node.js
-Desenvolver uma aplicação simples que simule uma lista de tarefas (To-Do List), integrando Back-end (Node.js), Front-end (HTML/CSS), banco de dados, e implementando funcionalidades de segurança e uso de ferramentas em nuvem. Você também precisará utilizar o Git para versionamento do código.
+# Sistema de Gerenciamento de Tarefas
+
+Este projeto é um sistema de gerenciamento de tarefas que permite adicionar, atualizar, remover e listar tarefas. Ele usa Node.js, SQLite e Redis.
+
+## Funcionalidades
+
+- Cadastro e login de usuários
+- Adição de tarefas com status (Pendente/Completa)
+- Atualização do status das tarefas
+- Remoção de tarefas
+- Listagem de tarefas
+
+## Tecnologias
+
+- Node.js
+- Express
+- SQLite
+- Redis
+- HTML/CSS/JavaScript
+
+## Pré-requisitos
+
+- Instale o [Node.js](https://nodejs.org/) (versão 14 ou superior).
+- Instale o [npm](https://www.npmjs.com/).
+- (Opcional) Instale o [SQLite](https://www.sqlite.org/index.html).

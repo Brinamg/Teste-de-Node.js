@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarefas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h2>Lista de Tarefas</h2>
+        <button id="logoutBtn">Deslogar</button>
+    </nav>
+    
+    <div class="container">
+        <h1>Tarefas</h1>
+        <form id="taskForm">
+            <input type="text" id="taskTitle" placeholder="Título da Tarefa" required>
+            <select id="taskStatus">
+                <option value="pending">Pendente</option>
+                <option value="completed">Completa</option>
+            </select>
+            <button type="submit">Adicionar Tarefa</button>
+        </form>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            alert('Por favor, faça login.');
+            window.location.href = 'index.html';
+        }
+
+        // Função para deslogar
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html'; // Redirecionar para a página de login
+        });
+
+        document.getElementById('taskForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('taskTitle').value;
+            const status = document.getElementById('taskStatus').value;
+
+            const response = await fetch('/tasks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ title, status })
+            });
+
+            if (response.ok) {
+                loadTasks(); // Recarregar tarefas
+                document.getElementById('taskForm').reset(); // Limpar o formulário
+            } else {
+                alert('Erro ao adicionar tarefa');
+            }
+        });
+
+        async function loadTasks() {
+            const response = await fetch('/tasks', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                alert('Erro ao carregar tarefas');
+                return;
+            }
+
+            const tasks = await response.json();
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = ''; // Limpa a lista antes de adicionar
+
+            tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    ${task.title} - ${task.status === 'pending' ? 'Pendente' : 'Completa'} 
+                    <div class="button-group">
+                        <button class="status-btn" onclick="updateTask(${task.id}, '${task.status === 'pending' ? 'completed' : 'pending'}')">Alterar Status</button>
+                        <button class="remove-btn" onclick="deleteTask(${task.id})">Remover</button>
+                    </div>
+                `;
+                taskList.appendChild(li);
+            });
+        }
+
+        async function updateTask(id, newStatus) {
+            const response = await fetch(`/tasks/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+
+            if (response.ok) {
+                loadTasks(); // Recarregar tarefas
+            } else {
+                alert('Erro ao atualizar tarefa');
+            }
+        }
+
+        async function deleteTask(id) {
+            const response = await fetch(`/tasks/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                loadTasks(); // Recarregar tarefas
+            } else {
+                alert('Erro ao remover tarefa');
+            }
+        }
+
+        // Carregar tarefas ao iniciar a página
+        loadTasks();
+    </script>
+</body>
+</html>
