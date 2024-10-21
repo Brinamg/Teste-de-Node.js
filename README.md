@@ -27,5 +27,8 @@ Este projeto é um sistema de gerenciamento de tarefas que permite adicionar, at
 ## Rodar a aplicação
 - git clone https://github.com/Brinamg/Teste-de-Node.js.git
 - code
+- Apbrir a para
 - npm install express sqlite3 cors body-parser express-validator jsonwebtoken bcrypt redis helmet install ioredis
+- Abrir o cmd e rodar o redis
+- redis-server
 - node server.js
